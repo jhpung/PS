@@ -1,2 +1,1 @@
-# python-ps
- 
+# Python 으로 알고리즘 풀기 (복습)
