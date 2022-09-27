@@ -1,4 +1,4 @@
-# Python 으로 알고리즘 풀기 (복습)
+# PS ( Problen Solving )
 
 머리가 굳지 않기 위한 알고리즘 문제 풀기
 
