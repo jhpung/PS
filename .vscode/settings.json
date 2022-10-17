@@ -84,6 +84,9 @@
         "valarray": "cpp",
         "variant": "cpp",
         "vector": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "__undef_macros": "cpp",
+        "functional": "cpp",
+        "memory_resource": "cpp"
     }
 }
