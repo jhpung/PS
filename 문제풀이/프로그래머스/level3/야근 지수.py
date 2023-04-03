@@ -1,7 +1,7 @@
 from functools import reduce
 from heapq import heapify, heappush, heappop, heapreplace
 
-# 힙을 사용해 O(N)의 시간복잡도로 해결할 수 있다.
+# 힙을 사용해 O(NlogN)의 시간복잡도로 해결할 수 있다.
 
 
 def solution(n=int, works=list):
@@ -11,11 +11,11 @@ def solution(n=int, works=list):
 
     heap = []
 
-    # heapify O(logN)
+    # heapify O(NlogN)
     for i in works:
         heappush(heap, (-i, i))
 
-    # O(N)
+    # O(NlogN)
     for i in range(n):
         key, value = heappop(heap)
 
