@@ -1,87 +1,83 @@
 from collections import deque
+import sys
+input = sys.stdin.readline
 
+swanQ = deque()
+borderQ = deque()
+waterQ = deque()
+waterBorderQ = deque()
 
-def solution(board=list):
+R, C = map(int, input().split())
 
-    dirs = [(1, 0), (0, 1), (-1, 0), (0, -1)]
-    H = len(board)
-    W = len(board[0])
-    answer = -1
+mp = []
+swan_visited = [[False for _ in range(C)] for _ in range(R)]
+water_visited = [[False for _ in range(C)] for _ in range(R)]
+dirs = [(0, 1), (1, 0), (-1, 0), (0, -1)]
+swan = None
 
-    visited = [[None for _ in range(W)] for _ in range(H)]
+for y in range(0, R):
+    mp.append(list(input()))
+    for x in range(0, C):
+        if mp[y][x] == 'L':
+            swan = (y, x)
+            waterQ.append((y, x))
+            water_visited[y][x] = True
+        if mp[y][x] == '.':
+            waterQ.append((y, x))
+swanQ.append(swan)
+swan_visited[swan[0]][swan[1]] = True
+day = 0
 
-    q = deque()
+while True:
+    # print('-----', day, '-----')
+    while swanQ:
+        y, x = swanQ.popleft()
 
-    for y in range(H):
-        for x in range(W):
-            if board[y][x] == 'R':
-                visited[y][x] = 0
-                q.append((y, x, 0))
+        for dy, dx in dirs:
+            ny, nx = y + dy, x + dx
 
-    while q:
-        y, x, count = q.popleft()
+            if ny < 0 or ny >= R or nx < 0 or nx >= C:
+                continue
+            if swan_visited[ny][nx]:
+                continue
+            swan_visited[ny][nx] = True
+            if mp[ny][nx] == 'X':
+                borderQ.append((ny, nx))
+                continue
+            if mp[ny][nx] == '.':
+                swanQ.append((ny, nx))
+                continue
+            if mp[ny][nx] == 'L':
+                print(day)
+                exit(0)
+    # print(waterQ)
+    while waterQ:
+        y, x = waterQ.popleft()
 
-        visited[y][x] = count
-        if board[y][x] == 'G':
-            return visited[y][x]
-        # LEFT
-        nx = x - 1
-        while nx >= 0:
-            if y == 1 and x == 6:
-                print('nx', nx)
-            if visited[y][nx]:
-                if y == 1 and x == 6:
-                    print('visited', y, nx)
-                break
-            if board[y][nx] == 'D' and visited[y][nx + 1] == None:
-                q.append((y, nx + 1, count + 1))
-                break
-            if board[y][nx] == 'D':
-                break
-            if nx == 0 and visited[y][nx] == None:
-                q.append((y, nx, count + 1))
-                break
-            nx -= 1
-        # TOP
-        ny = y - 1
-        while ny >= 0:
-            if visited[ny][x]:
-                break
-            if board[ny][x] == 'D' and visited[ny + 1][x] == None:
-                q.append((ny + 1, x, count + 1))
-                break
-            if board[ny][x] == 'D':
-                break
-            if ny == 0 and visited[ny][x] == None:
-                q.append((ny, x, count + 1))
-                break
-            ny -= 1
-        # RIGHT
-        nx = x + 1
-        while nx < W:
-            if visited[y][nx]:
-                break
-            if board[y][nx] == 'D' and visited[y][nx - 1] == None:
-                q.append((y, nx - 1, count + 1))
-                break
-            if board[y][nx] == 'D':
-                break
-            if nx == W - 1 and visited[y][nx] == None:
-                q.append((y, nx, count + 1))
-                break
-            nx += 1
-            # BOTTOM
-        ny = y + 1
-        while ny < H:
-            if visited[ny][x]:
-                break
-            if board[ny][x] == 'D' and visited[ny - 1][x] == None:
-                q.append((ny - 1, x, count + 1))
-                break
-            if board[ny][x] == 'D':
-                break
-            if ny == H - 1 and visited[ny][x] == None:
-                q.append((ny, x, count + 1))
-                break
-            ny += 1
-    return answer
+        for dy, dx in dirs:
+            ny, nx = y + dy, x + dx
+
+            if ny < 0 or ny >= R or nx < 0 or nx >= C:
+                continue
+            if water_visited[ny][nx]:
+                continue
+            water_visited[ny][nx] = True
+            if mp[ny][nx] == 'X':
+                mp[ny][nx] = '.'
+                waterBorderQ.append((ny, nx))
+                continue
+            if mp[ny][nx] == '.':
+                waterQ.append((ny, nx))
+                continue
+
+    # for y in range(R):
+    #     for x in range(C):
+    #         print(mp[y][x], end="")
+    #     print()
+
+    swanQ = borderQ.copy()
+    waterQ = waterBorderQ.copy()
+
+    borderQ.clear()
+    waterBorderQ.clear()
+    day += 1
