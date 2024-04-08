@@ -3,7 +3,6 @@ import sys
 input = sys.stdin.readline
 
 N = int(input())
-dp = [0] * (N + 2)
 nums = list(map(int, input().split()))
 
 curr = []
