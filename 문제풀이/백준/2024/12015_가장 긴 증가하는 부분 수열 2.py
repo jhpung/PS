@@ -30,6 +30,10 @@ for num in nums:
         curr.append(num)
         continue
     
+    if curr[0] > num:
+        curr[0] = num
+        continue
+    
     index = search(curr, 0, len(curr) - 1, num)
     
     curr[index] = num
